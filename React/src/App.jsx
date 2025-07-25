@@ -3,7 +3,8 @@ import Button from "./components/Button"
 import './components/app.css'
 import Register from "./components/Register"
 
-import { useState, useRef, useEffect } from "react"
+import { createContext } from "react"
+import { useState, useRef, useEffect, useReducer } from "react"
 
 const Bulb = ({light}) => {
   return (
@@ -13,9 +14,17 @@ const Bulb = ({light}) => {
   )
 }
 
+function reducer(state, action){
+  if (action.type ==='INCREASE') {
+    return state + action.data
+  }
+}
+
 function App() {
   const home = '집에 가고 싶다'
   const num = 10
+  const [count, dispatch] = useReducer(reducer, 0)
+
 
   const ButtonProps = {
     text: '메일',
@@ -32,6 +41,13 @@ function App() {
 
   const ref = useRef()
   console.log(ref)
+
+  const countPlus =() => {
+    dispatch({
+      type: 'INCREASE',
+      data: 1,
+    })
+  }
 
   useEffect(()=>{}, [])
 
@@ -78,6 +94,11 @@ function App() {
 
       <div>
         < Register/ >
+      </div>
+
+      <div>
+        <h3>{count}</h3>
+        <button onClick={countPlus}>+</button>
       </div>
     </>
   )
